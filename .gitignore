@@ -1,5 +1,6 @@
 .vscode
 __pycache__
+.env
 venv
 node_modules/
 
@@ -13,3 +14,4 @@ node_modules/
 ehthumbs.db
 Thumbs.db
 env/
+
