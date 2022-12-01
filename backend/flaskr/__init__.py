@@ -268,30 +268,33 @@ def create_app(test_config=None):
                 abort(404)
 
             categories = Category.query.order_by(Category.id).all()
-            categories = [category.format() for category in categories]
+            categories_dict = {category.id: category.type for category in categories}
 
-            categories_dict = {}
-            for i in range(len(categories)):
-                categories_dict[categories[i]["id"]] = categories[i]["type"]
             category_id = quiz_category["id"]
 
+            if category_id == 0:
+                category_id = random.randint(1, 6)
+
+            # Get all questions from the selected category
             selection = Question.query.order_by(Question.id).filter(Question.category == category_id)
             current_questions = paginate_questions(request, selection)
 
             if len(current_questions) == 0:
                 abort(404)
 
-            # print(current_questions)
+            # Get the question IDs from the selected category
             question_ids = []
             for i in range(len(current_questions)):
                 question_ids.append((current_questions[i]["id"]))
 
-            # Get the differences between two lists
+            # Get the differences between the selected category question IDs and the request
+            # body previous questions
             differences = []
             for elem in question_ids:
                 if elem not in previous_questions:
                     differences.append(elem)
 
+            # If the differences list is empty return all categories
             if len(differences) == 0:
                 return jsonify (
                     {
@@ -300,14 +303,12 @@ def create_app(test_config=None):
                     }
                 )
 
+            # Get a random question from the selected category
             question_id = random.choice(differences)
             question = {}
             for i in range(len(current_questions)):
                 if question_id == current_questions[i]["id"]:
                     question = current_questions[i]
-
-            # print(question)
-            # print(differences)
 
             return jsonify(
                 {
