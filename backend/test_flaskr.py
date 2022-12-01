@@ -99,13 +99,13 @@ class TriviaTestCase(unittest.TestCase):
     """
     Test for resource deletion
     """
-    # def test_delete_question(self):
-    #     res = self.client().delete('/questions/1')
-    #     data = json.loads(res.data)
+    def test_delete_question(self):
+        res = self.client().delete('/questions/4')
+        data = json.loads(res.data)
 
-    #     self.assertEqual(res.status_code, 200)
-    #     self.assertEqual(data['success'], True)
-    #     self.assertEqual(data['deleted'], 1)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['deleted'], 4)
 
     """
     Test for deletion of non existing resource
@@ -122,13 +122,13 @@ class TriviaTestCase(unittest.TestCase):
     Test question search with results
     """
     def test_get_question_search_with_results(self):
-        res = self.client().post("/questions/search", json={"searchTerm": "town"})
+        res = self.client().post("/questions/search", json={"searchTerm": "autobiography"})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["totalQuestions"])
-        self.assertEqual(len(data["questions"]), 10)
+        self.assertEqual(len(data["questions"]), 1)
 
     """
     Test question search without results
