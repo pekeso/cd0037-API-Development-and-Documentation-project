@@ -24,6 +24,14 @@ pip install -r requirements.txt
 
 ### Set up the Database
 
+Set up the database path string as an environment variable in an `.env` file with the following format:
+```yml
+DATABASE_NAME='trivia'
+PORT=5432
+DATABASE_PATH='postgresql://localhost:${PORT}/${DATABASE_NAME}'
+```
+
+
 With Postgres running, create a `trivia` database:
 
 ```bash
